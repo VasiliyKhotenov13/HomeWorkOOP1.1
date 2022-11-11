@@ -19,7 +19,7 @@ public class Main {
         car4.setTransmission("АКПП");
         Car car5 = new Car("Hyundai", "Avante", 1.6f,
                 "оранжевый", 2016, "Южная корея");
-        car5.setRegistrationNumber("a078aa777");
+        car5.setRegistrationNumber("a078aa777фывфыв");
 
         printCarInfo(car1);
         System.out.println("Корректный регистрационный номер? " + car1.checkingRegistrationNumber());
@@ -27,6 +27,7 @@ public class Main {
         printCarInfo(car3);
         printCarInfo(car4);
         printCarInfo(car5);
+        System.out.println("Корректный регистрационный номер? " + car5.checkingRegistrationNumber());
 
     }
 
