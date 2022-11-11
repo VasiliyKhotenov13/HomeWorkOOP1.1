@@ -1,6 +1,84 @@
 package transport;
 
+import java.time.LocalDate;
+
 public class Car {
+
+    public static class Key {
+
+        private final boolean remoteEngineStart;
+        private final boolean keylessAccess;
+
+        public Key(boolean remoteEngineStart, boolean keylessAccess) {
+            this.remoteEngineStart = remoteEngineStart;
+            this.keylessAccess = keylessAccess;
+        }
+
+        public Key() {
+            this(false, false);
+        }
+
+        public boolean isRemoteEngineStart() {
+            return remoteEngineStart;
+        }
+
+        public boolean isKeylessAccess() {
+            return keylessAccess;
+        }
+    }
+
+    public static class Insurance {
+        private final LocalDate insurancePeriod;
+        private final double insuranceCost;
+        private final String insuranceNumber;
+
+        public Insurance(LocalDate insurancePeriod, double insuranceCost, String insuranceNumber) {
+            if (insurancePeriod == null) {
+                this.insurancePeriod = LocalDate.now().plusDays(365);
+            } else {
+                this.insurancePeriod = insurancePeriod;
+            }
+            this.insuranceCost = insuranceCost;
+            if (insuranceNumber == null) {
+                this.insuranceNumber = "123456789";
+            } else {
+                this.insuranceNumber = insuranceNumber;
+            }
+        }
+
+        public Insurance() {
+            this(null,5000, null);
+        }
+
+        public LocalDate getInsurancePeriod() {
+            return insurancePeriod;
+        }
+
+        public double getInsuranceCost() {
+            return insuranceCost;
+        }
+
+        public String getInsuranceNumber() {
+            return insuranceNumber;
+        }
+
+        public void checkExpiryDate() {
+            if (insurancePeriod.isBefore(LocalDate.now()) || insurancePeriod.isEqual(LocalDate.now())) {
+                System.out.println("Вам нужно заново оформить страховку!");
+            } else {
+                System.out.println("Ваша страховка действует до " + insurancePeriod);
+            }
+        }
+
+        public void checkInsuranceNumber() {
+            if (insuranceNumber == null || insuranceNumber.length() != 9) {
+                System.out.println("Номер страховки некорректный!");
+            } else {
+                System.out.println("Номер страховки корректный!");
+            }
+        }
+    }
+
     private final String brand;
     private final String model;
     float engineVolume;
@@ -12,11 +90,14 @@ public class Car {
     String registrationNumber;
     private final int numberOfSeats;
     boolean summerTires;
+    private Key key;
+    private Insurance insurance;
 
     public Car(String brand, String model, float engineVolume,
                String color, int year, String country,
                String transmission, String bodyType,
-               String registrationNumber, int numberOfSeats, boolean summerTires) {
+               String registrationNumber, int numberOfSeats,
+               boolean summerTires, Key key, Insurance insurance) {
         if (brand == null || brand.length() == 0) {
             this.brand = "default";
         } else {
@@ -55,6 +136,16 @@ public class Car {
         } else {
             this.transmission = transmission;
         }
+        if (key == null) {
+            this.key = new Key();
+        } else {
+            this.key = key;
+        }
+        if (insurance == null) {
+            this.insurance = new Insurance();
+        } else {
+            this.insurance = insurance;
+        }
         this.summerTires = summerTires;
         this.numberOfSeats = numberOfSeats;
     }
@@ -63,7 +154,7 @@ public class Car {
                String color, int year, String country) {
         this(brand, model, engineVolume, color, year, country,
                 "МКПП", "седан", "x000xx000",
-                4, true);
+                4, true, new Key(), new Insurance());
     }
 
     public float getEngineVolume() {
@@ -140,6 +231,22 @@ public class Car {
 
     public int getNumberOfSeats() {
         return numberOfSeats;
+    }
+
+    public Key getKey() {
+        return key;
+    }
+
+    public void setKey(Key key) {
+        this.key = key;
+    }
+
+    public Insurance getInsurance() {
+        return insurance;
+    }
+
+    public void setInsurance(Insurance insurance) {
+        this.insurance = insurance;
     }
 
     public void changingTires() {
