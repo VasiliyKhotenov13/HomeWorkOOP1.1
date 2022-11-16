@@ -2,12 +2,12 @@ package transport;
 
 import java.time.LocalDate;
 
-public class Car {
+public class Car extends Transport {
 
     public static class Key {
 
-        private final boolean remoteEngineStart;
-        private final boolean keylessAccess;
+        private boolean remoteEngineStart;
+        private boolean keylessAccess;
 
         public Key(boolean remoteEngineStart, boolean keylessAccess) {
             this.remoteEngineStart = remoteEngineStart;
@@ -79,62 +79,39 @@ public class Car {
         }
     }
 
-    private final String brand;
-    private final String model;
+
     float engineVolume;
-    String color;
-    private final int year;
-    private final String country;
     String transmission;
-    private final String bodyType;
+    private String bodyType;
     String registrationNumber;
-    private final int numberOfSeats;
+    private int numberOfSeats;
     boolean summerTires;
     private Key key;
     private Insurance insurance;
 
-    public Car(String brand, String model, float engineVolume,
-               String color, int year, String country,
-               String transmission, String bodyType,
-               String registrationNumber, int numberOfSeats,
-               boolean summerTires, Key key, Insurance insurance) {
-        if (brand == null || brand.length() == 0) {
-            this.brand = "default";
+    public Car(String brand, String model, int year, String country, String color, int maxSpeed, float engineVolume, String transmission, String bodyType,
+               String registrationNumber, int numberOfSeats, boolean summerTires, Key key,
+               Insurance insurance, String fuelType) {
+        super(brand, model, year, country, color, maxSpeed, fuelType);
+        if (engineVolume <= 0) {
+            this.engineVolume = 1.5f;
         } else {
-            this.brand = brand;
-        }
-        if (model == null || model.length() == 0) {
-            this.model = "default";
-        } else {
-            this.model = model;
-        }
-        this.engineVolume = engineVolume;
-        if (color == null || color.length() == 0) {
-            this.color = "белый";
-        } else {
-            this.color = color;
-        }
-        this.year = year;
-
-        if (country == null || country.length() == 0) {
-            this.country = "'страна не указана'";
-        } else {
-            this.country = country;
-        }
-        if (registrationNumber == null) {
-            this.registrationNumber = "x000xx000";
-        } else {
-            this.registrationNumber = registrationNumber;
-        }
-        if (bodyType == null) {
-            this.bodyType = "седан";
-        } else {
-            this.bodyType = bodyType;
+            this.engineVolume = engineVolume;
         }
         if (transmission == null) {
             this.transmission = "МКПП";
         } else {
             this.transmission = transmission;
+        }
+        if (bodyType == null || bodyType.length() == 0) {
+            this.bodyType = "седан";
+        } else {
+            this.bodyType = bodyType;
+        }
+        if (registrationNumber == null || registrationNumber.length() == 0) {
+            this.registrationNumber = "x000xx000";
+        } else {
+            this.registrationNumber = registrationNumber;
         }
         if (key == null) {
             this.key = new Key();
@@ -146,15 +123,23 @@ public class Car {
         } else {
             this.insurance = insurance;
         }
-        this.summerTires = summerTires;
         this.numberOfSeats = numberOfSeats;
+        this.summerTires = summerTires;
     }
 
-    public Car(String brand, String model, float engineVolume,
-               String color, int year, String country) {
-        this(brand, model, engineVolume, color, year, country,
-                "МКПП", "седан", "x000xx000",
-                4, true, new Key(), new Insurance());
+    public void refill() {
+        String gas = "Бензин";
+        String diesel = "Дизель";
+        String electric = "Электричество";
+        if (getFuelType().equalsIgnoreCase(gas)) {
+            System.out.println("Заправляется бензином!");
+        } else if (getFuelType().equalsIgnoreCase(diesel)) {
+            System.out.println("Заправляется дизелем на заправке!");
+        } else if (getFuelType().equalsIgnoreCase(electric)) {
+            System.out.println("Нужно заряжать на специальных электропарковках!");
+        } else {
+            System.out.println("НЕВЕРНЫЙ ТИП ТОПЛИВА!");
+        }
     }
 
     public float getEngineVolume() {
@@ -163,18 +148,6 @@ public class Car {
 
     public void setEngineVolume(float engineVolume) {
         this.engineVolume = engineVolume;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        if (color == null || color.length() == 0) {
-            this.color = "белый";
-        } else {
-            this.color = color;
-        }
     }
 
     public String getTransmission() {
@@ -209,21 +182,7 @@ public class Car {
         this.summerTires = summerTires;
     }
 
-    public String getBrand() {
-        return brand;
-    }
 
-    public String getModel() {
-        return model;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public String getCountry() {
-        return country;
-    }
 
     public String getBodyType() {
         return bodyType;
@@ -272,11 +231,22 @@ public class Car {
 
     @Override
     public String toString() {
-        return "Автомобиль. Марка: " + brand +
-                ". Модель: " + model +
-                ". Объём двигателя: " + engineVolume +
-                ". Цвет кузова: " + color +
-                ". Год выпуска: " + year +
-                ". Страная производитель: " + country + ".";
+        return "Автомобиль. Марка: " + getBrand() +
+        ". Модель: " + getModel() +
+                ". Объём двигателя: " + getEngineVolume() +
+                ". Коробка передач: " + getTransmission() +
+                ". Тип кузова: " + getBodyType() +
+                ". Количество мест: " + getNumberOfSeats() +
+                ". Цвет кузова: " + getColor() +
+                ". " + (getSummerTires() ? "Летняя" : "Зимняя") + " резина" +
+                ". Год выпуска: " + getYear() +
+                ". Страная производитель: " + getCountry() +
+                ". Регистрационный номер: " + getRegistrationNumber() +
+                "." + (getKey().isKeylessAccess() ? " Бесключевой доступ!" : " Ключевой доступ!") +
+                (getKey().isRemoteEngineStart() ?
+                        " Есть удалённый запуск двигателя!" : " Нет удалённого запуска двигателя!") +
+                " Номер страховки: " + getInsurance().getInsuranceNumber() +
+                ". Стоимость страховки: " + getInsurance().getInsuranceCost() +
+                ". Срок действия страховки: " + getInsurance().getInsurancePeriod();
     }
 }
