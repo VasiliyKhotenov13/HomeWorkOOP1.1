@@ -45,12 +45,12 @@ public class Main {
         Bus bus3 = new Bus("ГАЗель", "CITY", 2020, "Россия",
                 "голубой", 150, "дизель");
 
-        printCarInfo(car1);
+        System.out.println(car1.toString());
         System.out.println("Корректный регистрационный номер? " + car1.checkingRegistrationNumber());
-        printCarInfo(car2);
-        printCarInfo(car3);
-        printCarInfo(car4);
-        printCarInfo(car5);
+        System.out.println(car2.toString());
+        System.out.println(car3.toString());
+        System.out.println(car4.toString());
+        System.out.println(car5.toString());
         System.out.println("Корректный регистрационный номер? " + car5.checkingRegistrationNumber());
         car5.getInsurance().checkExpiryDate();
         car5.getInsurance().checkInsuranceNumber();
@@ -65,28 +65,5 @@ public class Main {
         bus1.refill();
 
         System.out.println(car1.toString());
-    }
-
-
-    private static void printCarInfo(Car car) {
-        System.out.println(
-                "Автомобиль. Марка: " + car.getBrand() +
-                        ". Модель: " + car.getModel() +
-                        ". Объём двигателя: " + car.getEngineVolume() +
-                        ". Коробка передач: " + car.getTransmission() +
-                        ". Тип кузова: " + car.getBodyType() +
-                        ". Количество мест: " + car.getNumberOfSeats() +
-                        ". Цвет кузова: " + car.getColor() +
-                        ". " + (car.getSummerTires() ? "Летняя" : "Зимняя") + " резина" +
-                        ". Год выпуска: " + car.getYear() +
-                        ". Страная производитель: " + car.getCountry() +
-                        ". Регистрационный номер: " + car.getRegistrationNumber() +
-                        "." + (car.getKey().isKeylessAccess() ? " Бесключевой доступ!" : " Ключевой доступ!") +
-                        (car.getKey().isRemoteEngineStart() ?
-                                " Есть удалённый запуск двигателя!" : " Нет удалённого запуска двигателя!") +
-                        " Номер страховки: " + car.getInsurance().getInsuranceNumber() +
-                        ". Стоимость страховки: " + car.getInsurance().getInsuranceCost() +
-                        ". Срок действия страховки: " + car.getInsurance().getInsurancePeriod()
-        );
     }
 }
