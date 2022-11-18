@@ -3,89 +3,12 @@ package transport;
 import java.time.LocalDate;
 
 public class Car extends Transport {
-
-    public static class Key {
-
-        private boolean remoteEngineStart;
-        private boolean keylessAccess;
-
-        public Key(boolean remoteEngineStart, boolean keylessAccess) {
-            this.remoteEngineStart = remoteEngineStart;
-            this.keylessAccess = keylessAccess;
-        }
-
-        public Key() {
-            this(false, false);
-        }
-
-        public boolean isRemoteEngineStart() {
-            return remoteEngineStart;
-        }
-
-        public boolean isKeylessAccess() {
-            return keylessAccess;
-        }
-    }
-
-    public static class Insurance {
-        private final LocalDate insurancePeriod;
-        private final double insuranceCost;
-        private final String insuranceNumber;
-
-        public Insurance(LocalDate insurancePeriod, double insuranceCost, String insuranceNumber) {
-            if (insurancePeriod == null) {
-                this.insurancePeriod = LocalDate.now().plusDays(365);
-            } else {
-                this.insurancePeriod = insurancePeriod;
-            }
-            this.insuranceCost = insuranceCost;
-            if (insuranceNumber == null) {
-                this.insuranceNumber = "123456789";
-            } else {
-                this.insuranceNumber = insuranceNumber;
-            }
-        }
-
-        public Insurance() {
-            this(null,5000, null);
-        }
-
-        public LocalDate getInsurancePeriod() {
-            return insurancePeriod;
-        }
-
-        public double getInsuranceCost() {
-            return insuranceCost;
-        }
-
-        public String getInsuranceNumber() {
-            return insuranceNumber;
-        }
-
-        public void checkExpiryDate() {
-            if (insurancePeriod.isBefore(LocalDate.now()) || insurancePeriod.isEqual(LocalDate.now())) {
-                System.out.println("Вам нужно заново оформить страховку!");
-            } else {
-                System.out.println("Ваша страховка действует до " + insurancePeriod);
-            }
-        }
-
-        public void checkInsuranceNumber() {
-            if (insuranceNumber == null || insuranceNumber.length() != 9) {
-                System.out.println("Номер страховки некорректный!");
-            } else {
-                System.out.println("Номер страховки корректный!");
-            }
-        }
-    }
-
-
-    float engineVolume;
-    String transmission;
-    private String bodyType;
-    String registrationNumber;
-    private int numberOfSeats;
-    boolean summerTires;
+    private float engineVolume;
+    private String transmission;
+    private final String bodyType;
+    private String registrationNumber;
+    private final int numberOfSeats;
+    private boolean summerTires;
     private Key key;
     private Insurance insurance;
 
@@ -127,21 +50,6 @@ public class Car extends Transport {
         this.summerTires = summerTires;
     }
 
-    public void refill() {
-        String gas = "Бензин";
-        String diesel = "Дизель";
-        String electric = "Электричество";
-        if (getFuelType().equalsIgnoreCase(gas)) {
-            System.out.println("Заправляется бензином!");
-        } else if (getFuelType().equalsIgnoreCase(diesel)) {
-            System.out.println("Заправляется дизелем на заправке!");
-        } else if (getFuelType().equalsIgnoreCase(electric)) {
-            System.out.println("Нужно заряжать на специальных электропарковках!");
-        } else {
-            System.out.println("НЕВЕРНЫЙ ТИП ТОПЛИВА!");
-        }
-    }
-
     public float getEngineVolume() {
         return engineVolume;
     }
@@ -181,8 +89,6 @@ public class Car extends Transport {
     public void setSummerTires(boolean summerTires) {
         this.summerTires = summerTires;
     }
-
-
 
     public String getBodyType() {
         return bodyType;
@@ -229,10 +135,100 @@ public class Car extends Transport {
         return true;
     }
 
+    public static class Key {
+
+        private boolean remoteEngineStart;
+        private boolean keylessAccess;
+
+        public Key(boolean remoteEngineStart, boolean keylessAccess) {
+            this.remoteEngineStart = remoteEngineStart;
+            this.keylessAccess = keylessAccess;
+        }
+
+        public Key() {
+            this(false, false);
+        }
+
+        public boolean isRemoteEngineStart() {
+            return remoteEngineStart;
+        }
+
+        public boolean isKeylessAccess() {
+            return keylessAccess;
+        }
+    }
+
+    public static class Insurance {
+        private final LocalDate insurancePeriod;
+        private final double insuranceCost;
+        private final String insuranceNumber;
+
+        public Insurance(LocalDate insurancePeriod, double insuranceCost, String insuranceNumber) {
+            if (insurancePeriod == null) {
+                this.insurancePeriod = LocalDate.now().plusDays(365);
+            } else {
+                this.insurancePeriod = insurancePeriod;
+            }
+            this.insuranceCost = insuranceCost;
+            if (insuranceNumber == null) {
+                this.insuranceNumber = "123456789";
+            } else {
+                this.insuranceNumber = insuranceNumber;
+            }
+        }
+
+        public Insurance() {
+            this(null, 5000, null);
+        }
+
+        public LocalDate getInsurancePeriod() {
+            return insurancePeriod;
+        }
+
+        public double getInsuranceCost() {
+            return insuranceCost;
+        }
+
+        public String getInsuranceNumber() {
+            return insuranceNumber;
+        }
+
+        public void checkExpiryDate() {
+            if (insurancePeriod.isBefore(LocalDate.now()) || insurancePeriod.isEqual(LocalDate.now())) {
+                System.out.println("Вам нужно заново оформить страховку!");
+            } else {
+                System.out.println("Ваша страховка действует до " + insurancePeriod);
+            }
+        }
+
+        public void checkInsuranceNumber() {
+            if (insuranceNumber == null || insuranceNumber.length() != 9) {
+                System.out.println("Номер страховки некорректный!");
+            } else {
+                System.out.println("Номер страховки корректный!");
+            }
+        }
+    }
+
+    public void refill() {
+        String gas = "Бензин";
+        String diesel = "Дизель";
+        String electric = "Электричество";
+        if (getFuelType().equalsIgnoreCase(gas)) {
+            System.out.println("Заправляется бензином!");
+        } else if (getFuelType().equalsIgnoreCase(diesel)) {
+            System.out.println("Заправляется дизелем на заправке!");
+        } else if (getFuelType().equalsIgnoreCase(electric)) {
+            System.out.println("Нужно заряжать на специальных электропарковках!");
+        } else {
+            System.out.println("НЕВЕРНЫЙ ТИП ТОПЛИВА!");
+        }
+    }
+
     @Override
     public String toString() {
         return "Автомобиль. Марка: " + getBrand() +
-        ". Модель: " + getModel() +
+                ". Модель: " + getModel() +
                 ". Объём двигателя: " + getEngineVolume() +
                 ". Коробка передач: " + getTransmission() +
                 ". Тип кузова: " + getBodyType() +
